@@ -72,8 +72,10 @@ def getParser(name):
 
 def getTimeFromHourAndMinutes(hour, minute):
 	now = time.localtime()
-	begin = int(time.mktime((now.tm_year, now.tm_mon, now.tm_mday,
-						hour, minute, 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
+	begin = int(time.mktime((
+		now.tm_year, now.tm_mon, now.tm_mday,
+		hour, minute, 0, now.tm_wday, now.tm_yday, now.tm_isdst
+	)))
 	return begin
 
 
@@ -294,7 +296,7 @@ class EPGImport:
 		if deleteFile and self.source.parser != "epg.dat":
 			try:
 				print("[EPGImport] unlink", filename, file=log)
-				unlink(filename)
+				unlink_if_exists(filename)
 			except Exception as e:
 				print("[EPGImport] warning: Could not remove '%s' intermediate" % filename, e, file=log)
 		self.channelFiles = self.source.channels.downloadables()
@@ -334,7 +336,7 @@ class EPGImport:
 			reactor.addReader(self)
 		if deleteFile and filename:
 			try:
-				unlink(filename)
+				unlink_if_exists(filename)
 			except Exception as e:
 				print("[EPGImport] warning: Could not remove '%s' intermediate" % filename, e, file=log)
 
@@ -397,7 +399,7 @@ class EPGImport:
 		print("[EPGImport] ### thread is ready ### Events:", self.eventCount, file=log)
 		if filename:
 			try:
-				unlink(filename)
+				unlink_if_exists(filename)
 			except Exception as e:
 				print("[EPGImport] warning: Could not remove '%s' intermediate" % filename, e, file=log)
 
